@@ -1,3 +1,5 @@
 node_modules/
 test-data/
 .env
+src/fileWriter.js
+src/indexcopy.js
