@@ -24,7 +24,13 @@ ${bugData.preconditions || "Not provided"}
 ---
 
 ## 📋 Steps to Reproduce
-${bugData.steps || "Not provided"}
+${
+  Array.isArray(bugData.steps)
+    ? bugData.steps
+        .map((step, index) => `${index + 1}. ${step}`)
+        .join("\n")
+    : bugData.steps || "Not provided"
+}
 
 ---
 
