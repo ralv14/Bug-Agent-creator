@@ -90,6 +90,9 @@ async function run() {
   const platform = extractSection(body, "Plataforma") || "Both";
   const description = extractSection(body, "Descripción") || "Sin contexto adicional";
   const evidenceText = extractSection(body, "Evidencia");
+  
+  // 🚀 Soporte para --no-upload (para flujos de dos pasos)
+  const shouldUpload = !process.argv.includes("--no-upload");
 
   console.log(chalk.cyan("\n🤖 BUG AGENT (DESDE ISSUE) 🤖\n"));
   console.log(`🔢 Issue: #${issueNumber}`);
@@ -117,6 +120,20 @@ async function run() {
   console.log(chalk.green("\n✅ Bug report generado:\n"));
   console.log(JSON.stringify(bugData, null, 2));
 
+  // 🔍 DEBUG: Log detallado sobre los archivos de evidencia
+  console.log(chalk.cyan("\n📦 EVIDENCIA ADJUNTA:"));
+  console.log(`Total de archivos en batch.media: ${batch.media ? batch.media.length : 0}`);
+  if (batch.media && batch.media.length > 0) {
+    batch.media.forEach((file, idx) => {
+      const exists = file.localPath && fs.existsSync(file.localPath) ? "✅" : "❌";
+      console.log(
+        `  ${idx + 1}. ${file.fileName} - Path: ${file.localPath} - Existe: ${exists}`,
+      );
+    });
+  } else {
+    console.log("  ⚠️ Sin archivos adjuntos");
+  }
+
   const resultPath = path.join(__dirname, "../ci-output");
   fs.mkdirSync(resultPath, { recursive: true });
 
@@ -124,14 +141,43 @@ async function run() {
 
   if (!bugData.title || !bugData.steps) {
     commentBody =
-      "⚠️ El Bug Agent generó un reporte incompleto (falta título o pasos) y **no se subió a Trello**. Revisa la evidencia y vuelve a intentarlo.";
+      "⚠️ El Bug Agent generó un reporte incompleto (falta título o pasos). Revisa la evidencia y vuelve a intentarlo.";
+  } else if (!shouldUpload) {
+    // 🔍 Modo review: mostrar el reporte y esperar aprobación
+    commentBody = `
+## ✅ Bug Report Generado
+
+**Título:** ${bugData.title}
+**Severidad:** ${bugData.severity}
+
+### 📋 Pasos para reproducir:
+${
+  Array.isArray(bugData.steps)
+    ? bugData.steps.map((step, i) => `${i + 1}. ${step}`).join("\n")
+    : bugData.steps
+}
+
+### ❌ Resultado Actual:
+${bugData.actual}
+
+### ✅ Resultado Esperado:
+${bugData.expected}
+
+### 📝 Descripción:
+${bugData.description}
+
+---
+
+**¿Está bien el reporte?** 
+Si todo se ve correcto, **comenta \`/approve\`** en este issue para subirlo a Trello.
+Si necesita cambios, edita este issue y vuelve a crear uno nuevo.`;
   } else {
     try {
       const card = await uploadToTrello(bugData, batch.media || []);
       const uploadedTime = Date.now();
       logMetric(bugData.title, startTime, generatedTime, uploadedTime);
 
-      commentBody = `✅ Bug procesado y subido a Trello: [${bugData.title}](${card.shortUrl})`;
+      commentBody = `✅ Bug subido a Trello: [${bugData.title}](${card.shortUrl})`;
       console.log(chalk.green("\n✅ Uploaded to Trello!\n"));
     } catch (err) {
       commentBody = `❌ El Bug Agent generó el reporte pero **falló al subirlo a Trello**: ${err.message}`;
@@ -139,11 +185,16 @@ async function run() {
     }
   }
 
-  fs.writeFileSync(path.join(resultPath, "comment.txt"), commentBody);
+  fs.writeFileSync(path.join(resultPath, "bug-report-comment.txt"), commentBody);
   fs.writeFileSync(
     path.join(resultPath, "bug-report.json"),
     JSON.stringify(bugData, null, 2),
   );
+  
+  // 📄 Si fue un upload (no --no-upload), también guardar en archivo de confirmación
+  if (shouldUpload) {
+    fs.writeFileSync(path.join(resultPath, "trello-upload-comment.txt"), commentBody);
+  }
 }
 
 run().catch((err) => {
@@ -151,7 +202,7 @@ run().catch((err) => {
   const resultPath = path.join(__dirname, "../ci-output");
   fs.mkdirSync(resultPath, { recursive: true });
   fs.writeFileSync(
-    path.join(resultPath, "comment.txt"),
+    path.join(resultPath, "bug-report-comment.txt"),
     `❌ El Bug Agent falló al procesar este issue: ${err.message}`,
   );
   process.exit(1);

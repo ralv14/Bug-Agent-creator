@@ -1,7 +1,6 @@
-
-
 const axios = require("axios");
 const fs = require("fs");
+const path = require("path");
 
 function formatBugDescription(bugData) {
   return `
@@ -91,25 +90,85 @@ async function uploadToTrello(bugData, mediaFiles = []) {
 
     console.log(`✅ Card created: ${cardResponse.data.shortUrl}`);
 
-    // 📎 Upload attachments
-    for (const file of mediaFiles) {
-      console.log(`📎 Attaching ${file.fileName}...`);
+    // 📎 Upload attachments with better error handling
+    const uploadResults = {
+      successful: 0,
+      failed: 0,
+      skipped: 0,
+    };
 
-      await axios.postForm(
-        `https://api.trello.com/1/cards/${cardId}/attachments`,
-        {
-          key: TRELLO_API_KEY,
-          token: TRELLO_TOKEN,
-          file: fs.createReadStream(file.localPath),
-          name: file.fileName,
-        },
+    if (!mediaFiles || mediaFiles.length === 0) {
+      console.log("ℹ️ No attachments to upload.");
+    } else {
+      console.log(`📎 Uploading ${mediaFiles.length} attachment(s)...`);
+
+      for (const file of mediaFiles) {
+        try {
+          // 1. Validar que el archivo exista
+          if (!file.localPath) {
+            console.warn(
+              `⚠️ Skipped "${file.fileName}": no localPath provided`,
+            );
+            uploadResults.skipped += 1;
+            continue;
+          }
+
+          if (!fs.existsSync(file.localPath)) {
+            console.warn(
+              `⚠️ Skipped "${file.fileName}": file not found at ${file.localPath}`,
+            );
+            uploadResults.skipped += 1;
+            continue;
+          }
+
+          // 2. Verificar tamaño del archivo (Trello tiene límite)
+          const fileSize = fs.statSync(file.localPath).size;
+          const maxSize = 10 * 1024 * 1024; // 10 MB
+          if (fileSize > maxSize) {
+            console.warn(
+              `⚠️ Skipped "${file.fileName}": file too large (${(fileSize / 1024 / 1024).toFixed(2)}MB > 10MB)`,
+            );
+            uploadResults.skipped += 1;
+            continue;
+          }
+
+          // 3. Intentar subir
+          console.log(
+            `  → Uploading ${file.fileName} (${(fileSize / 1024).toFixed(2)}KB)...`,
+          );
+
+          await axios.postForm(
+            `https://api.trello.com/1/cards/${cardId}/attachments`,
+            {
+              key: TRELLO_API_KEY,
+              token: TRELLO_TOKEN,
+              file: fs.createReadStream(file.localPath),
+              name: file.fileName,
+            },
+          );
+
+          console.log(`  ✅ ${file.fileName} uploaded successfully`);
+          uploadResults.successful += 1;
+        } catch (err) {
+          console.error(
+            `  ❌ Failed to upload "${file.fileName}": ${err.message}`,
+          );
+          uploadResults.failed += 1;
+        }
+      }
+
+      console.log(
+        `\n📊 Upload summary: ${uploadResults.successful} successful, ${uploadResults.failed} failed, ${uploadResults.skipped} skipped`,
       );
+
+      if (uploadResults.successful === 0 && mediaFiles.length > 0) {
+        throw new Error(
+          `Failed to upload any attachments. Check logs for details.`,
+        );
+      }
     }
 
-    console.log("✅ All attachments uploaded.");
-
     return cardResponse.data;
-
   } catch (error) {
     const errorDetail = error.response
       ? JSON.stringify(error.response.data)
