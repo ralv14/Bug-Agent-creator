@@ -13,8 +13,10 @@ const { uploadToTrello } = require("../src/trelloService");
 const { logMetric } = require("../src/metrics-logger");
 
 function extractSection(body, heading) {
+  // Coincide con "### 🌐 Entorno", "### 📱 Plataforma", etc.
+  // Permite emojis y espacios antes del heading
   const regex = new RegExp(
-    `### ${heading}\\s*\\n+([\\s\\S]*?)(?=\\n### |$)`,
+    `###\\s*[^\\n]*${heading}[^\\n]*\\n+([\\s\\S]*?)(?=\\n###|$)`,
     "i",
   );
   const match = body.match(regex);
@@ -86,7 +88,7 @@ async function run() {
 
   const env = extractSection(body, "Entorno") || "Both";
   const platform = extractSection(body, "Plataforma") || "Both";
-  const description = extractSection(body, "Descripción del bug");
+  const description = extractSection(body, "Descripción") || "Sin contexto adicional";
   const evidenceText = extractSection(body, "Evidencia");
 
   console.log(chalk.cyan("\n🤖 BUG AGENT (DESDE ISSUE) 🤖\n"));
