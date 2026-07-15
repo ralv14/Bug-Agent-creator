@@ -105,8 +105,17 @@ async function run() {
 
   fs.writeFileSync(path.join(folder, "description.txt"), description);
 
+  console.log(chalk.cyan("\n🔍 DEBUG - Extrayendo URLs de evidencia:"));
+  console.log(`Raw evidenceText:\n"${evidenceText}"\n`);
+  
   const urls = extractAttachmentUrls(evidenceText);
-  console.log(`📦 Adjuntos encontrados: ${urls.length}`);
+  console.log(`URLs encontradas: ${urls.length}`);
+  if (urls.length > 0) {
+    urls.forEach((url, idx) => console.log(`  ${idx + 1}. ${url}`));
+  } else {
+    console.log("  ⚠️ No se encontraron URLs en el formato esperado");
+  }
+  
   await downloadEvidence(urls, folder);
 
   // 2. Corre el Bug Agent
