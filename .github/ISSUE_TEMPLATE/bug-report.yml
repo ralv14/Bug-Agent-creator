@@ -1,8 +1,13 @@
 name: 🐞 Reportar Bug
 description: Sube tu evidencia (fotos, videos, logs) y el Bug Agent generará el reporte automáticamente.
-title: "[Bug]"
 labels: ["bug-agent"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        ℹ️ **El título del bug será generado automáticamente por el agente.** 
+        Solo necesitas llenar Entorno, Plataforma y subir tu evidencia.
+
   - type: dropdown
     id: environment
     attributes:
