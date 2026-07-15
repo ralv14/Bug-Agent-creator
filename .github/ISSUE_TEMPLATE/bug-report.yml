@@ -1,0 +1,54 @@
+name: 🐞 Reportar un bug
+description: Reporta un bug y sube tu evidencia. El Bug Agent lo procesará y lo subirá a Trello automáticamente.
+title: "[Bug]: "
+labels: ["bug-agent"]
+body:
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Entorno
+      description: ¿En qué entorno ocurrió el bug?
+      options:
+        - Network
+        - Cloud
+        - Both
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Plataforma
+      description: ¿En qué plataforma ocurrió el bug?
+      options:
+        - Android
+        - iOS
+        - Both
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción del bug
+      description: Describe qué pasó, pasos para reproducirlo, resultado esperado vs. actual, etc.
+      placeholder: |
+        Pasos:
+        1. ...
+        2. ...
+
+        Resultado actual: ...
+        Resultado esperado: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidencia
+      description: >
+        Arrastra aquí tus capturas, videos o logs (.png, .jpg, .mp4, .mov, .log, .txt).
+        Puedes soltar los archivos directamente en este campo.
+      placeholder: Arrastra tus archivos aquí...
+    validations:
+      required: false
