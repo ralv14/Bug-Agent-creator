@@ -24,14 +24,30 @@ function extractSection(body, heading) {
 }
 
 function extractAttachmentUrls(text) {
-  // Coincide con enlaces markdown ![alt](url) y [texto](url)
-  const regex = /!?\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g;
-  const urls = [];
+  // Busca dos formatos:
+  // 1. URLs en markdown: ![alt](url) o [text](url)
+  // 2. URLs simples: https://... (en líneas separadas)
+  
+  const urls = new Set(); // Set para evitar duplicados
+  
+  // Formato 1: Markdown
+  const markdownRegex = /!?\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g;
   let m;
-  while ((m = regex.exec(text)) !== null) {
-    urls.push(m[1]);
+  while ((m = markdownRegex.exec(text)) !== null) {
+    urls.add(m[1]);
   }
-  return urls;
+  
+  // Formato 2: URLs simples (github.com/user-attachments o cualquier URL HTTPS)
+  const plainUrlRegex = /(https?:\/\/[^\s<>\[\]()]+)/g;
+  while ((m = plainUrlRegex.exec(text)) !== null) {
+    const url = m[1];
+    // Evita agregar URLs que son parte de markdown
+    if (!url.includes("]") && !url.includes("[")) {
+      urls.add(url);
+    }
+  }
+  
+  return Array.from(urls);
 }
 
 function extensionFromContentType(contentType) {
