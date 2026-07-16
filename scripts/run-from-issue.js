@@ -199,13 +199,17 @@ If you need changes, edit this issue and create a new one.`;
   );
 }
 
-run().catch((err) => {
-  console.error(chalk.red("❌ Run failed:"), err.message);
-  const resultPath = path.join(__dirname, "../ci-output");
-  fs.mkdirSync(resultPath, { recursive: true });
-  fs.writeFileSync(
-    path.join(resultPath, "bug-report-comment.txt"),
-    `❌ The Bug Agent failed to process this issue: ${err.message}`,
-  );
-  process.exit(1);
-});
+
+// Only run if this script is invoked directly, not when required
+if (require.main === module) {
+  run().catch((err) => {
+    console.error(chalk.red("❌ Run failed:"), err.message);
+    const resultPath = path.join(__dirname, "../ci-output");
+    fs.mkdirSync(resultPath, { recursive: true });
+    fs.writeFileSync(
+      path.join(resultPath, "bug-report-comment.txt"),
+      `❌ The Bug Agent failed to process this issue: ${err.message}`,
+    );
+    process.exit(1);
+  });
+}
