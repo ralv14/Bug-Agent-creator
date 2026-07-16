@@ -1,0 +1,14 @@
+{
+  "title": "Application exhibits no response on Android platform",
+  "description": "The application on the Android platform fails to respond, as indicated by the absence of any relevant logs.",
+  "steps": [
+    "Launch the application on the Android device.",
+    "Perform various user interactions within the application.",
+    "Observe the system logs for any corresponding entries or error messages."
+  ],
+  "actual": "No logs are generated, and the application appears unresponsive.",
+  "expected": "The application should be responsive, and logs should be generated reflecting user interactions and application status.",
+  "severity": "Critical",
+  "platform": "Android",
+  "environment": "Network"
+}
