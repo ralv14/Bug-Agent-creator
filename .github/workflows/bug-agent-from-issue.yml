@@ -1,4 +1,4 @@
-name: Bug Agent desde Issue
+name: Bug Agent from Issue
 
 on:
   issues:
@@ -25,29 +25,39 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Procesar issue y correr Bug Agent
+      - name: Process issue and run Bug Agent
         id: run_agent
-        continue-on-error: true
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/run-from-issue.js --no-upload
 
-      - name: Comentar reporte generado en el Issue
+      - name: 📋 Save bug report as JSON for approval workflow
+        if: success()
+        run: |
+          mkdir -p .bug-reports
+          cp ci-output/bug-report.json .bug-reports/issue-${{ github.event.issue.number }}-report.json
+          git config --global user.email "bug-agent@github.com"
+          git config --global user.name "Bug Agent Bot"
+          git add .bug-reports/issue-${{ github.event.issue.number }}-report.json
+          git commit -m "🤖 temp: bug report for issue #${{ github.event.issue.number }}" || echo "No changes"
+          git push
+
+      - name: Comment generated report on the Issue
         if: always()
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            let reportContent = '❌ El Bug Agent no generó ningún resultado (revisa los logs del workflow).';
+            let reportContent = '❌ The Bug Agent did not generate any result (check the workflow logs).';
             let reportJson = '';
             try {
               reportContent = fs.readFileSync('ci-output/bug-report-comment.txt', 'utf-8');
               reportJson = fs.readFileSync('ci-output/bug-report.json', 'utf-8');
             } catch (e) {
-              // usa el mensaje default
+              // use default message
             }
             
-            // Crear comment con reporte visible + JSON oculto
+            // Create comment with visible report + hidden JSON
             const comment = reportContent + '\n\n<!-- BUG_AGENT_REPORT_JSON\n' + reportJson + '\nEND_BUG_AGENT_REPORT_JSON -->';
             
             await github.rest.issues.createComment({
@@ -58,7 +68,7 @@ jobs:
             });
 
 
-      - name: Subir reporte generado como artifact
+      - name: Upload generated report as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:

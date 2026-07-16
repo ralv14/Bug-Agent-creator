@@ -1,4 +1,4 @@
-name: Aprobar y Subir a Trello
+name: Approve and Upload to Trello
 
 on:
   issue_comment:
@@ -27,41 +27,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: 📖 Leer reporte generado del issue
+      - name: 📖 Read saved bug report
         id: read_report
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            
-            // Obtener todos los comments del issue
-            const comments = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-            
-            // Buscar el comment con el JSON del reporte
-            let bugReport = null;
-            for (const comment of comments.data) {
-              const match = comment.body.match(/<!-- BUG_AGENT_REPORT_JSON\n([\s\S]*?)\nEND_BUG_AGENT_REPORT_JSON -->/);
-              if (match) {
-                bugReport = JSON.parse(match[1]);
-                break;
-              }
-            }
-            
-            if (!bugReport) {
-              throw new Error('No se encontró el reporte generado. ¿Olvidaste esperar a que se genere?');
-            }
-            
-            // Guardar el reporte para el siguiente paso
-            fs.mkdirSync('ci-output', { recursive: true });
-            fs.writeFileSync('ci-output/bug-report.json', JSON.stringify(bugReport, null, 2));
+        run: |
+          REPORT_PATH=".bug-reports/issue-${{ github.event.issue.number }}-report.json"
+          if [ ! -f "$REPORT_PATH" ]; then
+            echo "❌ Error: Bug report not found at $REPORT_PATH"
+            echo "Did the generation workflow complete successfully?"
+            exit 1
+          fi
+          mkdir -p ci-output
+          cp "$REPORT_PATH" ci-output/bug-report.json
+          echo "✅ Report loaded from repo"
 
-      - name: Procesar issue y subir a Trello (sin regenerar)
+      - name: Process issue and upload to Trello (without regenerating)
         id: upload
-        continue-on-error: true
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TRELLO_API_KEY: ${{ secrets.TRELLO_API_KEY }}
@@ -69,7 +49,7 @@ jobs:
           TRELLO_LIST_ID: ${{ secrets.TRELLO_LIST_ID }}
         run: node scripts/upload-to-trello.js
 
-      - name: 📊 Guardar métricas en el repo
+      - name: 📊 Save metrics to repo
         if: always()
         run: |
           git config --global user.email "bug-agent@github.com"
@@ -78,17 +58,26 @@ jobs:
           git commit -m "📊 log: bug metrics updated from issue #${{ github.event.issue.number }}" || echo "No changes to commit"
           git push
 
-      - name: Comentar confirmación de upload en el Issue
+      - name: 🧹 Cleanup temporary report file
+        if: always()
+        run: |
+          git config --global user.email "bug-agent@github.com"
+          git config --global user.name "Bug Agent Bot"
+          git rm .bug-reports/issue-${{ github.event.issue.number }}-report.json
+          git commit -m "🤖 temp: cleanup report for issue #${{ github.event.issue.number }}" || echo "No cleanup needed"
+          git push || echo "Push failed (might be already cleaned)"
+
+      - name: Comment upload confirmation on the Issue
         if: always()
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            let comment = '❌ Falló al subir a Trello (revisa los logs del workflow).';
+            let comment = '❌ Failed to upload to Trello (check the workflow logs).';
             try {
               comment = fs.readFileSync('ci-output/trello-upload-comment.txt', 'utf-8');
             } catch (e) {
-              // usa el mensaje default
+              // use default message
             }
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -97,7 +86,7 @@ jobs:
               body: comment,
             });
 
-      - name: Subir reporte como artifact
+      - name: Upload report as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
