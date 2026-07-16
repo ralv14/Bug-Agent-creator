@@ -1,17 +1,17 @@
-name: 🐞 Reportar Bug
-description: Sube tu evidencia (fotos, videos, logs) y el Bug Agent generará el reporte automáticamente.
+name: 🐞 Report Bug
+description: Upload your evidence (screenshots, videos, logs) and the Bug Agent will generate the report automatically.
 labels: ["bug-agent"]
 body:
   - type: markdown
     attributes:
       value: |
-        ℹ️ **El título del bug será generado automáticamente por el agente.** 
-        Solo necesitas llenar Entorno, Plataforma y subir tu evidencia.
+        ℹ️ **The bug title will be generated automatically by the agent.** 
+        Just fill in Environment, Platform, and upload your evidence.
 
   - type: dropdown
     id: environment
     attributes:
-      label: 🌐 Entorno
+      label: 🌐 Environment
       options:
         - Network
         - Cloud
@@ -22,7 +22,7 @@ body:
   - type: dropdown
     id: platform
     attributes:
-      label: 📱 Plataforma
+      label: 📱 Platform
       options:
         - Android
         - iOS
@@ -33,17 +33,17 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: 📝 Descripción (opcional)
-      description: Contexto del bug (qué pasó, dónde, cuándo, etc.)
-      placeholder: Describe brevemente el problema...
+      label: 📝 Description (optional)
+      description: Context of the bug (what happened, where, when, etc.)
+      placeholder: Briefly describe the problem...
     validations:
       required: false
 
   - type: textarea
     id: evidence
     attributes:
-      label: 📎 Evidencia
-      description: Arrastra aquí capturas, videos o logs. El agente los procesará automáticamente.
-      placeholder: Arrastra tus archivos aquí (.png, .jpg, .mp4, .mov, .log, .txt)...
+      label: 📎 Evidence
+      description: Drag screenshots, videos, or logs here. The agent will process them automatically.
+      placeholder: Drop your files here (.png, .jpg, .mp4, .mov, .log, .txt)...
     validations:
       required: true
