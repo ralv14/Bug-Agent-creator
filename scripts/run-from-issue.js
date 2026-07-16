@@ -9,8 +9,16 @@ const axios = require("axios");
 const chalk = require("chalk");
 
 const { startBugAgent } = require("../src/index");
-const { uploadToTrello } = require("../src/trelloService");
 const { logMetric } = require("../src/metrics-logger");
+
+// Import uploadToTrello only if needed (to avoid circular dependency)
+let uploadToTrello;
+function getUploadToTrello() {
+  if (!uploadToTrello) {
+    uploadToTrello = require("../src/trelloService").uploadToTrello;
+  }
+  return uploadToTrello;
+}
 
 function extractSection(body, heading) {
   // Coincide con "### 🌐 Entorno", "### 📱 Plataforma", etc.
@@ -198,7 +206,7 @@ If everything looks good, **comment \`/approve\`** on this issue to upload to Tr
 If you need changes, edit this issue and create a new one.`;
   } else {
     try {
-      const card = await uploadToTrello(bugData, batch.media || []);
+      const card = await getUploadToTrello()(bugData, batch.media || []);
       const uploadedTime = Date.now();
       logMetric(bugData.title, startTime, generatedTime, uploadedTime);
 
