@@ -31,7 +31,18 @@ jobs:
         id: regenerate
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/run-from-issue.js --no-upload
+        run: node scripts/run-from-issue.js
+
+      - name: 📋 Save regenerated bug report as JSON for approval workflow
+        if: success()
+        run: |
+          mkdir -p .bug-reports
+          cp ci-output/bug-report.json .bug-reports/issue-${{ github.event.issue.number }}-report.json
+          git config --global user.email "bug-agent@github.com"
+          git config --global user.name "Bug Agent Bot"
+          git add .bug-reports/issue-${{ github.event.issue.number }}-report.json
+          git commit -m "🤖 temp: regenerated bug report for issue #${{ github.event.issue.number }}" || echo "No changes"
+          git push
 
       - name: Comment new report on the Issue
         if: always()

@@ -29,7 +29,7 @@ jobs:
         id: run_agent
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/run-from-issue.js --no-upload
+        run: node scripts/run-from-issue.js
 
       - name: 📋 Save bug report as JSON for approval workflow
         if: success()
