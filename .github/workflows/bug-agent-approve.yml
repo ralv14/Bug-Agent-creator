@@ -34,7 +34,6 @@ jobs:
           TRELLO_API_KEY: ${{ secrets.TRELLO_API_KEY }}
           TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
           TRELLO_LIST_ID: ${{ secrets.TRELLO_LIST_ID }}
-          TIMEZONE: ${{ secrets.TIMEZONE || 'UTC' }}
         run: |
           node -e "
           const fs = require('fs');
