@@ -6,3 +6,4 @@ timestamp,bug_title,generation_time_s,upload_time_s,total_time_s
 2026-07-14T23:30:05.097Z,Application crashes after returning to Network Mode without a connected controller,38.1,30.0,68.1
 2026-07-15T17:21:32.650Z,Text 'No Color' is too close to line separation,272.0,46.9,319.0
 2026-07-16T18:37:32.683Z,Popup obstructs UI elements in multiple sections,0.0,2.3,2.3
+2026-07-16T18:46:14.561Z,Application exhibits no response on Android platform,0.0,0.5,0.5
