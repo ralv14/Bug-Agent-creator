@@ -92,7 +92,7 @@ async function run() {
 
   // 2. Download evidence from issue
   const body = issue.body || "";
-  const regex = /###\s*[^\n]*Evidencia[^\n]*\n+([\s\S]*?)(?=\n###|$)/i;
+  const regex = /###\s*[^\n]*Evidence[^\n]*\n+([\s\S]*?)(?=\n###|$)/i;
   const match = body.match(regex);
   const evidenceText = match ? match[1].trim() : "";
 

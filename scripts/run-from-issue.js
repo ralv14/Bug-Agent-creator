@@ -79,9 +79,9 @@ async function downloadEvidence(urls, destFolder) {
       count += 1;
       const fileName = `evidence-${count}${ext}`;
       fs.writeFileSync(path.join(destFolder, fileName), response.data);
-      console.log(`📎 Descargado: ${fileName} (${url})`);
+      console.log(`📎 Downloaded: ${fileName} (${url})`);
     } catch (err) {
-      console.error(`⚠️ No se pudo descargar ${url}: ${err.message}`);
+      console.error(`⚠️ Failed to download ${url}: ${err.message}`);
     }
   }
 }
@@ -89,25 +89,25 @@ async function downloadEvidence(urls, destFolder) {
 async function run() {
   const eventPath = process.env.GITHUB_EVENT_PATH;
   if (!eventPath || !fs.existsSync(eventPath)) {
-    throw new Error("No se encontró el evento de GitHub (GITHUB_EVENT_PATH).");
+    throw new Error("GitHub event path not found (GITHUB_EVENT_PATH).");
   }
 
   const event = JSON.parse(fs.readFileSync(eventPath, "utf-8"));
   const issue = event.issue;
 
   if (!issue) {
-    throw new Error("El evento no contiene un issue.");
+    throw new Error("Event does not contain an issue.");
   }
 
   const body = issue.body || "";
   const issueNumber = issue.number;
 
-  const env = extractSection(body, "Entorno") || "Both";
-  const platform = extractSection(body, "Plataforma") || "Both";
-  const description = extractSection(body, "Descripción") || "Sin contexto adicional";
-  const evidenceText = extractSection(body, "Evidencia");
+  const env = extractSection(body, "Environment") || "Both";
+  const platform = extractSection(body, "Platform") || "Both";
+  const description = extractSection(body, "Description") || "No additional context provided";
+  const evidenceText = extractSection(body, "Evidence");
   
-  // 🚀 Soporte para --no-upload (para flujos de dos pasos)
+  // 🚀 Support for --no-upload (for two-step flows)
   const shouldUpload = !process.argv.includes("--no-upload");
 
   console.log(chalk.cyan("\n🤖 BUG AGENT (FROM ISSUE) 🤖\n"));
