@@ -1,0 +1,23 @@
+{
+  "title": "Popup obstructs UI elements in multiple sections",
+  "description": "A modal dialog titled 'Power Button Disabled' appears and obstructs interactive elements in the Groups, Themes, and Colors sections of the application, preventing user interaction.",
+  "steps": [
+    "Launch the application.",
+    "Navigate to the 'Groups' tab.",
+    "Tap the three-dot menu for 'Group 1'.",
+    "Observe the 'Power Button Disabled' modal appears.",
+    "Tap the 'Themes' tab in the bottom navigation bar.",
+    "Observe the 'Power Button Disabled' modal remains and obstructs the 'Themes' content.",
+    "Tap the 'Colors' tab in the bottom navigation bar.",
+    "Observe the 'Power Button Disabled' modal remains and obstructs the 'Colors' content.",
+    "Tap the 'Schedule' tab in the bottom navigation bar.",
+    "Tap the 'Groups' tab in the bottom navigation bar.",
+    "Tap the 'Dashboard' tab in the bottom navigation bar.",
+    "Tap the three-dot menu for 'Group 1' again."
+  ],
+  "actual": "A modal dialog titled 'Power Button Disabled' appears, overlaying interactive elements in the Groups, Themes, and Colors sections. Tapping 'OK' or 'LEARN MORE' on the modal dismisses it, but the modal reappears when navigating between sections or interacting with group menus.",
+  "expected": "The 'Power Button Disabled' modal should not appear unexpectedly when navigating between sections or interacting with group menus. If it does appear, it should be dismissible without reappearing immediately and should not obstruct further interaction.",
+  "severity": "Medium",
+  "platform": "Android",
+  "environment": "Network"
+}
