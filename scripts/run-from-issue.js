@@ -11,15 +11,6 @@ const chalk = require("chalk");
 const { startBugAgent } = require("../src/index");
 const { logMetric } = require("../src/metrics-logger");
 
-// Import uploadToTrello only if needed (to avoid circular dependency)
-let uploadToTrello;
-function getUploadToTrello() {
-  if (!uploadToTrello) {
-    uploadToTrello = require("../src/trelloService").uploadToTrello;
-  }
-  return uploadToTrello;
-}
-
 function extractSection(body, heading) {
   // Coincide con "### 🌐 Entorno", "### 📱 Plataforma", etc.
   // Permite emojis y espacios antes del heading
@@ -114,9 +105,6 @@ async function run() {
   const platform = extractSection(body, "Platform") || "Both";
   const description = extractSection(body, "Description") || "No additional context provided";
   const evidenceText = extractSection(body, "Evidence");
-  
-  // 🚀 Support for --no-upload (for two-step flows)
-  const shouldUpload = !process.argv.includes("--no-upload");
 
   console.log(chalk.cyan("\n🤖 BUG AGENT (FROM ISSUE) 🤖\n"));
   console.log(`🔢 Issue: #${issueNumber}`);
@@ -170,13 +158,11 @@ async function run() {
   const resultPath = path.join(__dirname, "../ci-output");
   fs.mkdirSync(resultPath, { recursive: true });
 
-  let commentBody;
-
   if (!bugData.title || !bugData.steps) {
     commentBody =
       "⚠️ The Bug Agent generated an incomplete report (missing title or steps). Please check the evidence and try again.";
-  } else if (!shouldUpload) {
-    // 🔍 Review mode: show the report and wait for approval
+  } else {
+    // Review mode: show the report and wait for approval
     commentBody = `
 ## ✅ Bug Report Generated
 
@@ -204,18 +190,6 @@ ${bugData.description}
 **Is the report correct?**
 If everything looks good, **comment \`/approve\`** on this issue to upload to Trello.
 If you need changes, edit this issue and create a new one.`;
-  } else {
-    try {
-      const card = await getUploadToTrello()(bugData, batch.media || []);
-      const uploadedTime = Date.now();
-      logMetric(bugData.title, startTime, generatedTime, uploadedTime);
-
-      commentBody = `✅ Bug subido a Trello: [${bugData.title}](${card.shortUrl})`;
-      console.log(chalk.green("\n✅ Uploaded to Trello!\n"));
-    } catch (err) {
-      commentBody = `❌ El Bug Agent generó el reporte pero **falló al subirlo a Trello**: ${err.message}`;
-      console.error(chalk.red(commentBody));
-    }
   }
 
   fs.writeFileSync(path.join(resultPath, "bug-report-comment.txt"), commentBody);
@@ -223,11 +197,6 @@ If you need changes, edit this issue and create a new one.`;
     path.join(resultPath, "bug-report.json"),
     JSON.stringify(bugData, null, 2),
   );
-  
-  // 📄 Si fue un upload (no --no-upload), también guardar en archivo de confirmación
-  if (shouldUpload) {
-    fs.writeFileSync(path.join(resultPath, "trello-upload-comment.txt"), commentBody);
-  }
 }
 
 run().catch((err) => {
