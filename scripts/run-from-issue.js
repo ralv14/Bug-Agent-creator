@@ -110,31 +110,31 @@ async function run() {
   // 🚀 Soporte para --no-upload (para flujos de dos pasos)
   const shouldUpload = !process.argv.includes("--no-upload");
 
-  console.log(chalk.cyan("\n🤖 BUG AGENT (DESDE ISSUE) 🤖\n"));
+  console.log(chalk.cyan("\n🤖 BUG AGENT (FROM ISSUE) 🤖\n"));
   console.log(`🔢 Issue: #${issueNumber}`);
-  console.log(`🌐 Entorno: ${env}`);
-  console.log(`📱 Plataforma: ${platform}`);
+  console.log(`🌐 Environment: ${env}`);
+  console.log(`📱 Platform: ${platform}`);
 
-  // 1. Prepara la carpeta de evidencia
+  // 1. Prepare evidence folder
   const folder = path.join(__dirname, `../test-data/issue-${issueNumber}`);
   fs.mkdirSync(folder, { recursive: true });
 
   fs.writeFileSync(path.join(folder, "description.txt"), description);
 
-  console.log(chalk.cyan("\n🔍 DEBUG - Extrayendo URLs de evidencia:"));
+  console.log(chalk.cyan("\n🔍 DEBUG - Extracting evidence URLs:"));
   console.log(`Raw evidenceText:\n"${evidenceText}"\n`);
   
   const urls = extractAttachmentUrls(evidenceText);
-  console.log(`URLs encontradas: ${urls.length}`);
+  console.log(`URLs found: ${urls.length}`);
   if (urls.length > 0) {
     urls.forEach((url, idx) => console.log(`  ${idx + 1}. ${url}`));
   } else {
-    console.log("  ⚠️ No se encontraron URLs en el formato esperado");
+    console.log("  ⚠️ No URLs found in expected format");
   }
   
   await downloadEvidence(urls, folder);
 
-  // 2. Corre el Bug Agent
+  // 2. Run the Bug Agent
   const startTime = Date.now();
   const { bugData, batch } = await startBugAgent(folder, { env, platform });
   const generatedTime = Date.now();
@@ -142,21 +142,21 @@ async function run() {
   bugData.platform = platform;
   bugData.environment = env;
 
-  console.log(chalk.green("\n✅ Bug report generado:\n"));
+  console.log(chalk.green("\n✅ Bug report generated:\n"));
   console.log(JSON.stringify(bugData, null, 2));
 
-  // 🔍 DEBUG: Log detallado sobre los archivos de evidencia
-  console.log(chalk.cyan("\n📦 EVIDENCIA ADJUNTA:"));
-  console.log(`Total de archivos en batch.media: ${batch.media ? batch.media.length : 0}`);
+  // 🔍 DEBUG: Detailed log about evidence files
+  console.log(chalk.cyan("\n📦 ATTACHED EVIDENCE:"));
+  console.log(`Total files in batch.media: ${batch.media ? batch.media.length : 0}`);
   if (batch.media && batch.media.length > 0) {
     batch.media.forEach((file, idx) => {
       const exists = file.localPath && fs.existsSync(file.localPath) ? "✅" : "❌";
       console.log(
-        `  ${idx + 1}. ${file.fileName} - Path: ${file.localPath} - Existe: ${exists}`,
+        `  ${idx + 1}. ${file.fileName} - Path: ${file.localPath} - Exists: ${exists}`,
       );
     });
   } else {
-    console.log("  ⚠️ Sin archivos adjuntos");
+    console.log("  ⚠️ No attached files");
   }
 
   const resultPath = path.join(__dirname, "../ci-output");
@@ -166,36 +166,36 @@ async function run() {
 
   if (!bugData.title || !bugData.steps) {
     commentBody =
-      "⚠️ El Bug Agent generó un reporte incompleto (falta título o pasos). Revisa la evidencia y vuelve a intentarlo.";
+      "⚠️ The Bug Agent generated an incomplete report (missing title or steps). Please check the evidence and try again.";
   } else if (!shouldUpload) {
-    // 🔍 Modo review: mostrar el reporte y esperar aprobación
+    // 🔍 Review mode: show the report and wait for approval
     commentBody = `
-## ✅ Bug Report Generado
+## ✅ Bug Report Generated
 
-**Título:** ${bugData.title}
-**Severidad:** ${bugData.severity}
+**Title:** ${bugData.title}
+**Severity:** ${bugData.severity}
 
-### 📋 Pasos para reproducir:
+### 📋 Steps to Reproduce:
 ${
   Array.isArray(bugData.steps)
     ? bugData.steps.map((step, i) => `${i + 1}. ${step}`).join("\n")
     : bugData.steps
 }
 
-### ❌ Resultado Actual:
+### ❌ Actual Result:
 ${bugData.actual}
 
-### ✅ Resultado Esperado:
+### ✅ Expected Result:
 ${bugData.expected}
 
-### 📝 Descripción:
+### 📝 Description:
 ${bugData.description}
 
 ---
 
-**¿Está bien el reporte?** 
-Si todo se ve correcto, **comenta \`/approve\`** en este issue para subirlo a Trello.
-Si necesita cambios, edita este issue y vuelve a crear uno nuevo.`;
+**Is the report correct?**
+If everything looks good, **comment \`/approve\`** on this issue to upload to Trello.
+If you need changes, edit this issue and create a new one.`;
   } else {
     try {
       const card = await uploadToTrello(bugData, batch.media || []);
@@ -228,7 +228,7 @@ run().catch((err) => {
   fs.mkdirSync(resultPath, { recursive: true });
   fs.writeFileSync(
     path.join(resultPath, "bug-report-comment.txt"),
-    `❌ El Bug Agent falló al procesar este issue: ${err.message}`,
+    `❌ The Bug Agent failed to process this issue: ${err.message}`,
   );
   process.exit(1);
 });

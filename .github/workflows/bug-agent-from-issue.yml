@@ -39,17 +39,24 @@ jobs:
           script: |
             const fs = require('fs');
             let reportContent = '❌ El Bug Agent no generó ningún resultado (revisa los logs del workflow).';
+            let reportJson = '';
             try {
               reportContent = fs.readFileSync('ci-output/bug-report-comment.txt', 'utf-8');
+              reportJson = fs.readFileSync('ci-output/bug-report.json', 'utf-8');
             } catch (e) {
               // usa el mensaje default
             }
+            
+            // Crear comment con reporte visible + JSON oculto
+            const comment = reportContent + '\n\n<!-- BUG_AGENT_REPORT_JSON\n' + reportJson + '\nEND_BUG_AGENT_REPORT_JSON -->';
+            
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: reportContent,
+              body: comment,
             });
+
 
       - name: Subir reporte generado como artifact
         if: always()
