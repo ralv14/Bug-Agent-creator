@@ -1,0 +1,17 @@
+{
+  "title": "Loading data spinner persists and overlaps save button on Fifty Groups theme details screen",
+  "description": "When navigating to the 'Fifty Groups' theme details, the 'Loading data...' spinner remains visible and overlays the 'Save' button, preventing interaction with it.",
+  "steps": [
+    "Open the application.",
+    "Tap on the 'Themes' icon in the bottom navigation bar.",
+    "Tap on the three-dot menu icon for the 'Fifty Groups' theme.",
+    "Observe the 'Loading data...' spinner appears.",
+    "Attempt to tap the 'Save' button.",
+    "Observe the 'Save' button is unresponsive due to the overlaying spinner."
+  ],
+  "actual": "The 'Loading data...' spinner remains visible on the 'Fifty Groups' theme details screen, obscuring the 'Save' button and making it unusable.",
+  "expected": "The 'Loading data...' spinner should disappear once the data is loaded, allowing the user to interact with the 'Save' button.",
+  "severity": "High",
+  "platform": "Android",
+  "environment": "Network"
+}
