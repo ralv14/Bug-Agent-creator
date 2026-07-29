@@ -1,0 +1,29 @@
+{
+  "title": "Unable to delete events when multiple are present in a program",
+  "description": "When a program contains more than one lighting event, the application prevents the deletion of the first event added, displaying an 'Unable to Delete' message, even though other events exist.",
+  "steps": [
+    "Open the application.",
+    "Tap on '+ CREATE SCHEDULE'.",
+    "Name the program 'Program D' and tap 'Next'.",
+    "Select 'EVERY DAY OF THE WEEK' and tap 'Next'.",
+    "Select 'Sunrise' and tap 'Next'.",
+    "Select 'All Lights' and tap 'Next'.",
+    "Adjust the intensity slider to 13% and select 'No' for color control. Tap 'Next'.",
+    "Tap '+ Add Event'.",
+    "Select 'Sunset' and tap 'Next'.",
+    "Select 'All Lights' and tap 'Next'.",
+    "Adjust the intensity slider to 12% and select 'No' for color control. Tap 'Next'.",
+    "Tap the 'SAVE' button.",
+    "On the 'Program D' screen, locate the first 'Lighting Event' (When: Sunrise, Event: On).",
+    "Tap the trash can icon to delete this event.",
+    "Observe the 'Unable to Delete' dialog box stating 'Cannot delete when only one schedule event exists'.",
+    "Tap 'OK'.",
+    "Tap the trash can icon for the second 'Lighting Event' (When: Sunset, Event: Off).",
+    "Observe that this event is successfully deleted, and the 'Unable to Delete' dialog does not appear."
+  ],
+  "actual": "The application displays an 'Unable to Delete' dialog box with the message 'Cannot delete when only one schedule event exists' when attempting to delete the first lighting event, even when other events are present in the program. The first event remains unsued.",
+  "expected": "When a program contains multiple lighting events, the user should be able to delete any of these events without encountering an error. The 'Unable to Delete' message should only appear if it is the sole event in the program.",
+  "severity": "High",
+  "platform": "both",
+  "environment": "both"
+}
