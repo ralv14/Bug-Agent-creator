@@ -1,0 +1,28 @@
+{
+  "title": "Cannot delete a schedule event when only one exists in a program",
+  "description": "When editing a program that contains only one lighting event, the delete functionality for that event is disabled, and a message 'Cannot delete when only one schedule event exists' is displayed. However, the text indicates that this should be possible if there are more than one event.",
+  "steps": [
+    "Open the application.",
+    "Tap on '+ CREATE SCHEDULE'.",
+    "Enter 'Program D' in the 'Name Your Program' field and tap 'Next'.",
+    "Select 'EVERY DAY OF THE WEEK' and tap 'Next'.",
+    "Select 'Sunset' and tap 'Next'.",
+    "Select 'Groups', then select 'All Lights' and tap 'Next'.",
+    "Adjust the Intensity slider to 13% and select 'No' for 'Do your lights have color control?'. Tap 'Next'.",
+    "On the 'Program D' screen, observe the 'Lighting Events' section. There is one event listed with 'When: Sunrise', 'Lights: All Lights', 'Color: No Color', 'Event: On'.",
+    "Tap the trash can icon next to the 'When: Sunrise' event.",
+    "Observe that a dialog appears stating 'Unable to Delete' and 'Cannot delete when only one schedule event exists'. Tap 'OK'.",
+    "Tap '+ Add Event'.",
+    "Select 'Sunset' for 'When' and tap 'Next'.",
+    "Select 'Groups', then select 'All Lights' and tap 'Next'.",
+    "Adjust the Intensity slider and select 'No' for 'Do your lights have color control?'. Tap 'Next'.",
+    "Observe that a second event is now listed under 'Lighting Events' with 'When: Sunset', 'Lights: All Lights', 'Color: No Color', 'Event: Off'.",
+    "Tap the trash can icon next to the 'When: Sunset' event.",
+    "Observe that the event is deleted."
+  ],
+  "actual": "When editing a program with only one lighting event, attempting to delete that event displays a dialog 'Unable to Delete' with the message 'Cannot delete when only one schedule event exists'. The event is not deleted.",
+  "expected": "If a program contains only one lighting event, it should be possible to delete it. If the functionality is intentionally restricted, the UI should reflect this limitation clearly or the behavior should align with the stated requirement that deletion is possible when there are multiple events.",
+  "severity": "High",
+  "platform": "Both",
+  "environment": "Both"
+}
