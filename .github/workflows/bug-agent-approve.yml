@@ -38,52 +38,84 @@ jobs:
           node -e "
           const fs = require('fs');
           const path = require('path');
+          const axios = require('axios');
           require('dotenv').config();
           const { uploadToTrello } = require('./src/trelloService');
           const { logMetric } = require('./src/metrics-logger');
           
-          const issueNumber = ${{ github.event.issue.number }};
-          const reportPath = path.join('.bug-reports', \`issue-\${issueNumber}-report.json\`);
-          
-          if (!fs.existsSync(reportPath)) {
-            throw new Error('Bug report not found. Did the generation workflow complete successfully?');
-          }
-          
-          const bugData = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
-          const folder = path.join('test-data', \`issue-\${issueNumber}\`);
-          
-          // Get evidence files
-          const mediaFiles = [];
-          if (fs.existsSync(folder)) {
-            const files = fs.readdirSync(folder);
-            for (const file of files) {
-              if (file.startsWith('evidence-')) {
-                mediaFiles.push({
-                  fileName: file,
-                  localPath: path.join(folder, file),
-                });
+          async function downloadEvidenceFiles(issueNumber, issueBody) {
+            const folder = path.join('test-data', \`issue-\${issueNumber}\`);
+            fs.mkdirSync(folder, { recursive: true });
+            
+            // Extract URLs from issue body
+            const urlRegex = /https:\/\/github\.com\/user-attachments\/assets\/[^\s\)]+/g;
+            const urls = issueBody.match(urlRegex) || [];
+            
+            let count = 0;
+            for (const url of urls) {
+              try {
+                const response = await axios.get(url, { responseType: 'arraybuffer' });
+                const ext = path.extname(url.split('?')[0]) || '.bin';
+                count += 1;
+                const fileName = \`evidence-\${count}\${ext}\`;
+                fs.writeFileSync(path.join(folder, fileName), response.data);
+                console.log(\`✅ Downloaded: \${fileName}\`);
+              } catch (err) {
+                console.error(\`⚠️ Failed to download \${url}: \${err.message}\`);
               }
             }
+            return folder;
           }
           
-          const startTime = Date.now();
-          const generatedTime = Date.now();
-          
-          uploadToTrello(bugData, mediaFiles).then(card => {
-            const uploadedTime = Date.now();
-            logMetric(bugData.title, startTime, generatedTime, uploadedTime);
-            
-            const resultPath = path.join('ci-output');
-            fs.mkdirSync(resultPath, { recursive: true });
-            fs.writeFileSync(
-              path.join(resultPath, 'trello-upload-comment.txt'),
-              \`✅ Bug uploaded to Trello: [\${bugData.title}](\${card.shortUrl})\`
-            );
-            
-            console.log('✅ Uploaded to Trello!');
-          }).catch(err => {
-            throw new Error('Failed to upload to Trello: ' + err.message);
-          });
+          (async () => {
+            try {
+              const issueNumber = ${{ github.event.issue.number }};
+              const reportPath = path.join('.bug-reports', \`issue-\${issueNumber}-report.json\`);
+              
+              if (!fs.existsSync(reportPath)) {
+                throw new Error('Bug report not found. Did the generation workflow complete successfully?');
+              }
+              
+              const bugData = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
+              const issueBody = '${{ github.event.issue.body }}';
+              
+              // Download evidence files
+              console.log('📎 Downloading evidence files...');
+              const folder = await downloadEvidenceFiles(issueNumber, issueBody);
+              
+              // Get evidence files
+              const mediaFiles = [];
+              if (fs.existsSync(folder)) {
+                const files = fs.readdirSync(folder);
+                for (const file of files) {
+                  if (file.startsWith('evidence-')) {
+                    mediaFiles.push({
+                      fileName: file,
+                      localPath: path.join(folder, file),
+                    });
+                  }
+                }
+              }
+              
+              const startTime = Date.now();
+              const generatedTime = Date.now();
+              
+              const card = await uploadToTrello(bugData, mediaFiles);
+              const uploadedTime = Date.now();
+              logMetric(bugData.title, startTime, generatedTime, uploadedTime);
+              
+              const resultPath = path.join('ci-output');
+              fs.mkdirSync(resultPath, { recursive: true });
+              fs.writeFileSync(
+                path.join(resultPath, 'trello-upload-comment.txt'),
+                \`✅ Bug uploaded to Trello: [\${bugData.title}](\${card.shortUrl})\`
+              );
+              
+              console.log('✅ Uploaded to Trello!');
+            } catch (err) {
+              throw new Error('Failed to upload to Trello: ' + err.message);
+            }
+          })();
           "
 
       - name: 📊 Save metrics to repo
