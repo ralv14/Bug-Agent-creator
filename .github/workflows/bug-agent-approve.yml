@@ -35,7 +35,7 @@ jobs:
           TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
           TRELLO_LIST_ID: ${{ secrets.TRELLO_LIST_ID }}
         run: |
-          node -e "
+          node << 'NODEJS_SCRIPT'
           const fs = require('fs');
           const path = require('path');
           const axios = require('axios');
@@ -44,7 +44,7 @@ jobs:
           const { logMetric } = require('./src/metrics-logger');
           
           async function downloadEvidenceFiles(issueNumber, issueBody) {
-            const folder = path.join('test-data', \`issue-\${issueNumber}\`);
+            const folder = path.join('test-data', `issue-${issueNumber}`);
             fs.mkdirSync(folder, { recursive: true });
             
             // Extract URLs from issue body
@@ -57,11 +57,11 @@ jobs:
                 const response = await axios.get(url, { responseType: 'arraybuffer' });
                 const ext = path.extname(url.split('?')[0]) || '.bin';
                 count += 1;
-                const fileName = \`evidence-\${count}\${ext}\`;
+                const fileName = `evidence-${count}${ext}`;
                 fs.writeFileSync(path.join(folder, fileName), response.data);
-                console.log(\`✅ Downloaded: \${fileName}\`);
+                console.log(`✅ Downloaded: ${fileName}`);
               } catch (err) {
-                console.error(\`⚠️ Failed to download \${url}: \${err.message}\`);
+                console.error(`⚠️ Failed to download ${url}: ${err.message}`);
               }
             }
             return folder;
@@ -69,13 +69,13 @@ jobs:
           
           (async () => {
             try {
-              // Read GitHub event to get issue body
+              // Read GitHub event
               const eventPath = process.env.GITHUB_EVENT_PATH;
               const event = JSON.parse(fs.readFileSync(eventPath, 'utf-8'));
               const issueNumber = event.issue.number;
               const issueBody = event.issue.body || '';
               
-              const reportPath = path.join('.bug-reports', \`issue-\${issueNumber}-report.json\`);
+              const reportPath = path.join('.bug-reports', `issue-${issueNumber}-report.json`);
               
               if (!fs.existsSync(reportPath)) {
                 throw new Error('Bug report not found. Did the generation workflow complete successfully?');
@@ -112,15 +112,16 @@ jobs:
               fs.mkdirSync(resultPath, { recursive: true });
               fs.writeFileSync(
                 path.join(resultPath, 'trello-upload-comment.txt'),
-                \`✅ Bug uploaded to Trello: [\${bugData.title}](\${card.shortUrl})\`
+                `✅ Bug uploaded to Trello: [${bugData.title}](${card.shortUrl})`
               );
               
               console.log('✅ Uploaded to Trello!');
             } catch (err) {
-              throw new Error('Failed to upload to Trello: ' + err.message);
+              console.error('❌ Failed to upload to Trello:', err.message);
+              process.exit(1);
             }
           })();
-          "
+          NODEJS_SCRIPT
 
       - name: 📊 Save metrics to repo
         if: always()
