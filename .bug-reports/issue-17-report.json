@@ -1,22 +1,19 @@
 {
-  "title": "User cannot delete an event from a program with two events",
-  "description": "When a program contains two scheduled events, the user is unable to delete either event. A dialog appears stating 'Cannot delete when only one schedule event exists', which is contradictory.",
+  "title": "Cannot delete a program event when only one event exists in the program",
+  "description": "When a program contains only one event, the user is unable to delete it, and an error message is displayed. However, the program can be edited to add more events.",
   "steps": [
-    "Navigate to the main screen displaying created programs.",
-    "Tap the three-dot menu for 'Program D'.",
-    "Tap 'Edit' from the options.",
-    "On the 'Program D' screen, locate the 'Lighting Events' section.",
-    "Observe there are two events listed: one for 'Sunrise' and one for 'Sunset'.",
-    "Tap the trash can icon next to the 'Sunrise' event.",
-    "Observe the 'Unable to Delete' dialog appears, stating 'Cannot delete when only one schedule event exists'.",
-    "Tap 'OK' on the dialog.",
+    "Create a new program with two lighting events. (e.g., 'Program D' with 'Sunrise' and 'Sunset' events).",
+    "Save the program.",
+    "Navigate back to the program list and select 'Program D' to edit it.",
     "Tap the trash can icon next to the 'Sunset' event.",
-    "Observe the 'Unable to Delete' dialog appears again with the same message.",
-    "Tap 'OK' on the dialog."
+    "Observe the 'Unable to Delete' dialog box appears, stating 'Cannot delete when only one schedule event exists'.",
+    "Tap 'OK' on the dialog box.",
+    "Tap the trash can icon next to the 'Sunrise' event.",
+    "Observe the same 'Unable to Delete' dialog box appears."
   ],
-  "actual": "Upon attempting to delete an event from a program that has two events, a dialog box appears with the message 'Unable to Delete' and 'Cannot delete when only one schedule event exists'. The event is not deleted.",
-  "expected": "The user should be able to delete an event from a program, regardless of the number of events present, unless there is a valid reason preventing deletion. If the message is accurate and there is a restriction on deleting when only one event exists, the UI should clearly indicate this before the user attempts the action or the message should be revised to reflect the actual condition.",
+  "actual": "When attempting to delete a program event that is the only event remaining in a program, a dialog box appears stating 'Unable to Delete: Cannot delete when only one schedule event exists'. The event is not deleted.",
+  "expected": "The user should be able to delete any event within a program, regardless of how many other events are present. If there is only one event, it should be deletable, or the UI should prevent the creation of programs with zero events.",
   "severity": "High",
-  "platform": "Android",
-  "environment": "Network"
+  "platform": "Both",
+  "environment": "Both"
 }
