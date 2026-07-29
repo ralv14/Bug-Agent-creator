@@ -1,0 +1,21 @@
+{
+  "title": "Fixture lights intensity does not update when applying a theme",
+  "description": "When a theme is active and the user attempts to update the intensity of a fixture light, the changes are not reflected. The intensity slider moves, but the actual light intensity remains unchanged.",
+  "steps": [
+    "Open the application.",
+    "Tap on the three-dot menu icon in the top left corner.",
+    "Tap on 'Lights'.",
+    "Tap on the 'Theme H' option.",
+    "Tap on the three-dot menu next to 'Theme H'.",
+    "Tap on 'Intensity'.",
+    "Observe the list of groups and their associated settings.",
+    "Locate 'Group 5'.",
+    "Tap and drag the slider for 'Group 5' to the left, from 100 to 5.",
+    "Observe that the slider position changes to 5, but the red light for 'Group 5' remains at its previous intensity and does not visually update."
+  ],
+  "actual": "When the intensity slider for a fixture light within an active theme is adjusted, the slider visually moves to the new position, but the actual fixture light's intensity does not change.",
+  "expected": "When the intensity slider for a fixture light within an active theme is adjusted, the actual fixture light's intensity should update to reflect the new setting.",
+  "severity": "Medium",
+  "platform": "Both",
+  "environment": "Both"
+}

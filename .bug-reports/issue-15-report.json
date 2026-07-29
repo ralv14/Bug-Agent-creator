@@ -1,0 +1,17 @@
+{
+  "title": "Loading data overlay remains after navigating away from theme details",
+  "description": "The 'Loading data...' overlay persists and obstructs the UI even after the user navigates back to the main Themes screen.",
+  "steps": [
+    "Open the application.",
+    "Tap on the 'Themes' icon in the bottom navigation bar.",
+    "Tap on the three-dot menu icon for the 'Fifthy Groups' theme.",
+    "Observe the 'Loading data...' overlay appears.",
+    "Tap the back arrow at the top left of the screen.",
+    "Observe the 'Loading data...' overlay is still visible and obstructing the UI of the Themes screen."
+  ],
+  "actual": "The 'Loading data...' overlay remains on the screen after navigating back to the Themes list, preventing interaction with the UI.",
+  "expected": "The 'Loading data...' overlay should disappear upon successfully navigating back to the Themes screen, allowing normal interaction.",
+  "severity": "High",
+  "platform": "Android",
+  "environment": "Network"
+}
