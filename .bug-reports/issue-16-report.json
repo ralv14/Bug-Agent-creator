@@ -1,0 +1,16 @@
+{
+  "title": "Edit Theme screen is missing image selection options",
+  "description": "On the 'Edit Theme' screen, the options to 'Delete Photo', 'Choose Photo', and 'Cancel' are not visible, preventing users from managing theme images.",
+  "steps": [
+    "1. Open the application.",
+    "2. Navigate to the 'Themes' tab.",
+    "3. Tap the three-dot menu icon for any existing theme.",
+    "4. Select the 'Edit' option from the pop-up menu.",
+    "5. Observe the 'Edit Theme' screen."
+  ],
+  "actual": "The 'Edit Theme' screen loads, displaying theme details and groups, but the area intended for image selection is blank. The expected options 'Delete Photo', 'Choose Photo', and 'Cancel' are not visible or accessible.",
+  "expected": "The 'Edit Theme' screen should display the current theme image, along with options to 'Delete Photo', 'Choose Photo', and 'Cancel' for managing the theme's image.",
+  "severity": "High",
+  "platform": "iOS",
+  "environment": "Cloud"
+}
