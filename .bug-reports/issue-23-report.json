@@ -1,0 +1,16 @@
+{
+  "title": "Turning off one scene unexpectedly turns off all active zones",
+  "description": "When multiple scenes with active zones are present, disabling a single scene causes all other active zones to also turn off, even if they belong to different, still active scenes.",
+  "steps": [
+    "Observe the list of scenes. Ensure that 'low intensity' and 'Medium Intensity' scenes are both active, indicated by the toggles being in the ON position.",
+    "Tap the toggle for the 'low intensity' scene to turn it OFF.",
+    "Observe that the 'Medium Intensity' scene's toggle also turns OFF.",
+    "Tap the toggle for the 'low intensity' scene to turn it ON again.",
+    "Observe that the 'Medium Intensity' scene's toggle remains OFF."
+  ],
+  "actual": "When a single scene is turned off, all other active zones/scenes are also turned off simultaneously.",
+  "expected": "When a single scene is turned off, only that specific scene should be turned off. Other active scenes/zones should remain in their current state.",
+  "severity": "High",
+  "platform": "Android",
+  "environment": "Network"
+}
