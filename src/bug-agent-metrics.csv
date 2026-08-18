@@ -15,3 +15,4 @@ timestamp,bug_title,generation_time_s,upload_time_s,total_time_s
 2026-08-13T21:34:59.112Z,Application crashes when adding a third event to a new program,0.0,1.8,1.8
 2026-08-13T21:50:48.962Z,Editing an event results in a new event being created instead of updating the existing one,0.0,1.7,1.7
 2026-08-18T21:11:39.734Z,Scene toggle does not update status after turning off all lights,0.0,1.8,1.8
+2026-08-18T21:38:06.007Z,Disabling a scene turns off all active zones regardless of other active scenes,0.0,1.5,1.5
