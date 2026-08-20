@@ -1,0 +1,21 @@
+{
+  "title": "App crashes when attempting to delete a site after logging into Luxor Cloud",
+  "description": "The application crashes after a user logs into Luxor Cloud, selects a site, enters edit mode, and attempts to delete the selected site. Instead of returning to the network mode, the app terminates.",
+  "steps": [
+    "Launch the Luxor application.",
+    "Tap the hamburger menu icon in the top-left corner.",
+    "Tap 'SIGN IN TO LUXOR CLOUD'.",
+    "Enter valid email address and password.",
+    "Tap the 'LOG IN' button.",
+    "Tap 'GO TO MY SITES'.",
+    "Tap the 'EDIT' button.",
+    "Tap the trash can icon in the top-right corner of the 'Test' site details screen.",
+    "Tap 'OK' on the 'Delete Site' confirmation dialog.",
+    "Observe the application crash."
+  ],
+  "actual": "The application crashes and closes after the user confirms the deletion of a site.",
+  "expected": "After confirming the deletion of the site, the application should return to the network mode screen or a relevant previous screen.",
+  "severity": "Critical",
+  "platform": "iOS",
+  "environment": "Cloud"
+}
