@@ -17,3 +17,4 @@ timestamp,bug_title,generation_time_s,upload_time_s,total_time_s
 2026-08-18T21:11:39.734Z,Scene toggle does not update status after turning off all lights,0.0,1.8,1.8
 2026-08-18T21:38:06.007Z,Disabling a scene turns off all active zones regardless of other active scenes,0.0,1.5,1.5
 2026-08-20T00:34:14.967Z,Mobile application crashes when transitioning to Network mode,0.0,1.1,1.1
+2026-08-20T17:26:25.746Z,App crashes when attempting to delete a site after logging into Luxor Cloud,0.0,1.4,1.4
