@@ -1,0 +1,14 @@
+{
+  "title": "Onboarding wizard reappears after site and controller creation",
+  "description": "The onboarding wizard unexpectedly displays after a user creates a new site, adds a controller, and navigates to the dashboard. This bypasses the intended user flow.",
+  "steps": [
+    "Create a new site.",
+    "Add a controller to the newly created site.",
+    "Click on 'Go to Dashboard'."
+  ],
+  "actual": "The onboarding wizard appears after completing the site and controller creation flow and navigating to the dashboard.",
+  "expected": "The dashboard should be displayed without the onboarding wizard upon completion of site and controller creation.",
+  "severity": "Medium",
+  "platform": "Both",
+  "environment": "Cloud"
+}
