@@ -1,0 +1,14 @@
+{
+  "title": "App does not load any data on Android device with network connectivity",
+  "description": "The application fails to load any content or data on an Android device, despite the device having network connectivity. This prevents users from accessing any features or information within the app.",
+  "steps": [
+    "Ensure the Android device has a stable network connection (Wi-Fi or cellular data).",
+    "Launch the application.",
+    "Observe the main screen of the application."
+  ],
+  "actual": "The application displays no content, and the screen remains blank or shows a loading indicator indefinitely. No data or UI elements are rendered.",
+  "expected": "The application should load and display its content, including but not limited to menus, lists, or other relevant UI elements, indicating successful data retrieval.",
+  "severity": "Critical",
+  "platform": "Android",
+  "environment": "Network"
+}
