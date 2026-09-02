@@ -1,12 +1,15 @@
 {
-  "title": "No logs available for analysis",
-  "description": "The provided evidence consists only of a log entry stating 'No response'. No further information or context is available to diagnose or reproduce any potential issues.",
+  "title": "Controller device loses Wi-Fi connection after returning to network mode from cloud",
+  "description": "The controller device disconnects from Wi-Fi upon switching from cloud mode back to network mode within the Luxor application.",
   "steps": [
-    "Analyze provided evidence."
+    "Ensure the controller device is connected to Wi-Fi and in 'network mode' within the Luxor app.",
+    "Navigate to the cloud mode option within the Luxor app.",
+    "Return the controller device to 'network mode' using the Luxor app.",
+    "Observe the controller device's Wi-Fi connection status."
   ],
-  "actual": "The 'Logs / Notes' section states: '_No response_'. No actionable logs or notes were provided.",
-  "expected": "Actionable logs or notes that would allow for the identification and reproduction of a bug.",
-  "severity": "Low",
+  "actual": "The controller device loses its Wi-Fi connection after the mode switch.",
+  "expected": "The controller device should maintain its Wi-Fi connection when switching between cloud and network modes.",
+  "severity": "High",
   "platform": "Both",
   "environment": "Cloud"
 }
