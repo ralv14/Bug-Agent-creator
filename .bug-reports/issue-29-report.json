@@ -1,0 +1,12 @@
+{
+  "title": "No response observed in logs for 'cloud' environment",
+  "description": "The provided logs for the 'cloud' environment show no activity or response, indicating a potential issue with logging or system communication.",
+  "steps": [
+    "Access the logs for the 'cloud' environment."
+  ],
+  "actual": "The log entries are empty or show no response.",
+  "expected": "The logs should contain relevant entries indicating system activity or communication for the 'cloud' environment.",
+  "severity": "Medium",
+  "platform": "Both",
+  "environment": "Cloud"
+}
