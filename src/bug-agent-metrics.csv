@@ -21,3 +21,4 @@ timestamp,bug_title,generation_time_s,upload_time_s,total_time_s
 2026-09-02T17:56:58.113Z,Controller device loses Wi-Fi connection after returning to network mode from cloud,0.0,0.4,0.4
 2026-09-02T19:06:09.660Z,Zone List Not Displaying on Dashboard After Site Switch,0.0,0.7,0.7
 2026-09-02T21:52:14.602Z,Wizard unexpectedly appears after adding a controller to a new site,0.0,0.4,0.4
+2026-09-03T20:17:03.691Z,Intensity setting is not saved correctly for OFF events,0.0,1.4,1.4
