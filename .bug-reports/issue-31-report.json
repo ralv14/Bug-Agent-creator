@@ -1,0 +1,27 @@
+{
+  "title": "Duplicate events created when editing a program",
+  "description": "When editing a program, adding a new event results in the creation of duplicate events instead of a single new event. This behavior leads to an incorrect program configuration.",
+  "steps": [
+    "Open the application.",
+    "Navigate to the 'Lights' section.",
+    "Tap the three-dot menu for 'Program J'.",
+    "Select 'Edit'.",
+    "Tap '+ Add Event'.",
+    "Select 'Sunset' as the trigger.",
+    "Tap 'Next'.",
+    "Select 'Groups'.",
+    "Select 'All Lights'.",
+    "Tap 'Next'.",
+    "Ensure 'Intensity' is set to 'Off' and 'Do your lights have color control?' is set to 'No'.",
+    "Tap 'Next'.",
+    "Select 'Sunrise' as the trigger.",
+    "Tap 'Next'.",
+    "Observe the 'Lighting Events' section on the 'Program J' screen.",
+    "Tap the 'SAVE' button."
+  ],
+  "actual": "After saving the program, the 'Lighting Events' section shows two events for 'Sunrise' and one for 'Sunset' when only one new event was intended. The original 'Sunset' event is also present, resulting in a total of three events, not the expected one added event.",
+  "expected": "After saving the program, the 'Lighting Events' section should display the original 'Sunset' event and only one newly added 'Sunrise' event, for a total of two events.",
+  "severity": "High",
+  "platform": "Android",
+  "environment": "Network"
+}
