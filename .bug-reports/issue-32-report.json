@@ -1,22 +1,18 @@
 {
-  "title": "Schedule list appears empty after login to cloud despite having data",
-  "description": "When logging into the Luxor Cloud, the schedule list is displayed as empty, even though there is existing data for schedules.",
+  "title": "Schedule list appears empty after selecting a site and navigating to the schedule tab",
+  "description": "After logging into the Luxor Cloud, selecting a specific site, and then clicking on the 'Schedule' tab, the schedule list is displayed as empty, despite having available programs.",
   "steps": [
     "Open the Luxor application.",
-    "Enter email and password in the respective fields.",
+    "Enter valid email and password.",
     "Tap the 'LOG IN' button.",
-    "Observe the 'Connecting to Luxor Cloud' loading indicator.",
     "Tap the 'GO TO MY SITES' button.",
+    "Tap on the site named 'A Wizard'.",
     "Tap the 'CONTINUE' button.",
-    "Observe the 'SITE LIST' screen.",
-    "Tap the 'CONTINUE' button again.",
-    "Observe the 'Processing your request' loading indicator.",
-    "Navigate to the 'Lights' section.",
-    "Observe the 'MY FAVORITES' section.",
-    "Observe the '+ CREATE SCHEDULE' button."
+    "Observe the 'Schedule' tab.",
+    "Tap on the 'Schedule' tab."
   ],
-  "actual": "After logging into Luxor Cloud and navigating through the site list, the schedule list appears empty. The '+ CREATE SCHEDULE' button is visible, but no existing schedules are displayed.",
-  "expected": "After logging into Luxor Cloud and navigating through the site list, the schedule list should display all existing schedules.",
+  "actual": "The 'Schedule' tab displays an empty list, indicating no available programs, even when programs are expected to be present.",
+  "expected": "The 'Schedule' tab should display the list of available programs for the selected site.",
   "severity": "High",
   "platform": "Both",
   "environment": "Cloud"
