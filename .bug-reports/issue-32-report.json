@@ -1,0 +1,21 @@
+{
+  "title": "Schedule list is empty after logging into Cloud",
+  "description": "The Schedule List appears empty upon login to the Cloud environment, despite the presence of data.",
+  "steps": [
+    "Open the application.",
+    "Enter valid email and password in the login fields.",
+    "Tap the 'LOG IN' button.",
+    "Tap the 'GO TO MY SITES' button.",
+    "Tap the 'CONTINUE' button.",
+    "Observe the 'SITE LIST' screen.",
+    "Tap the '+ CREATE SCHEDULE' button.",
+    "Observe the screen.",
+    "Tap the 'Lights' button in the top right corner.",
+    "Observe the screen."
+  ],
+  "actual": "The screen displays '+ CREATE SCHEDULE' and is otherwise blank, indicating an empty schedule list.",
+  "expected": "The Schedule List should display existing schedules after logging into the Cloud environment.",
+  "severity": "High",
+  "platform": "Both",
+  "environment": "Cloud"
+}
