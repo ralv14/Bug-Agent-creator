@@ -1,20 +1,22 @@
 {
-  "title": "Schedule list is empty after logging into Cloud",
-  "description": "The Schedule List appears empty upon login to the Cloud environment, despite the presence of data.",
+  "title": "Schedule list appears empty after login to cloud despite having data",
+  "description": "When logging into the Luxor Cloud, the schedule list is displayed as empty, even though there is existing data for schedules.",
   "steps": [
-    "Open the application.",
-    "Enter valid email and password in the login fields.",
+    "Open the Luxor application.",
+    "Enter email and password in the respective fields.",
     "Tap the 'LOG IN' button.",
+    "Observe the 'Connecting to Luxor Cloud' loading indicator.",
     "Tap the 'GO TO MY SITES' button.",
     "Tap the 'CONTINUE' button.",
     "Observe the 'SITE LIST' screen.",
-    "Tap the '+ CREATE SCHEDULE' button.",
-    "Observe the screen.",
-    "Tap the 'Lights' button in the top right corner.",
-    "Observe the screen."
+    "Tap the 'CONTINUE' button again.",
+    "Observe the 'Processing your request' loading indicator.",
+    "Navigate to the 'Lights' section.",
+    "Observe the 'MY FAVORITES' section.",
+    "Observe the '+ CREATE SCHEDULE' button."
   ],
-  "actual": "The screen displays '+ CREATE SCHEDULE' and is otherwise blank, indicating an empty schedule list.",
-  "expected": "The Schedule List should display existing schedules after logging into the Cloud environment.",
+  "actual": "After logging into Luxor Cloud and navigating through the site list, the schedule list appears empty. The '+ CREATE SCHEDULE' button is visible, but no existing schedules are displayed.",
+  "expected": "After logging into Luxor Cloud and navigating through the site list, the schedule list should display all existing schedules.",
   "severity": "High",
   "platform": "Both",
   "environment": "Cloud"
