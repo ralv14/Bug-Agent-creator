@@ -1,0 +1,16 @@
+{
+  "title": "Pencil icon is too small in Area details on Android",
+  "description": "The pencil icon used for editing area details is too small, making it difficult to tap accurately.",
+  "steps": [
+    "Open the application.",
+    "Navigate to the 'Groups' tab.",
+    "Tap on the 'Areas' toggle.",
+    "Open an existing area by tapping on it.",
+    "Observe the pencil icon within the area details screen."
+  ],
+  "actual": "The pencil icon displayed in the area details screen is small and appears to be undersized.",
+  "expected": "The pencil icon should be of an appropriate size for easy visibility and tap accuracy.",
+  "severity": "Low",
+  "platform": "Android",
+  "environment": "Network"
+}
