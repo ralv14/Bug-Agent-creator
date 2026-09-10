@@ -1,0 +1,16 @@
+{
+  "title": "Cut off border colors on color selection screens",
+  "description": "The border colors are not fully displayed on the 'Select Color' screen accessible from Theme, Group, and Event details.",
+  "steps": [
+    "Open the application.",
+    "Navigate to the 'Groups' tab.",
+    "Select an existing group to edit.",
+    "Tap on the 'Color' option to open the color selection screen.",
+    "Observe the border colors on the color selection screen."
+  ],
+  "actual": "On the 'Select Color' screen accessed via Group details, the border colors have their edges cut off.",
+  "expected": "The border colors on the 'Select Color' screen should be fully visible and not cut off.",
+  "severity": "Low",
+  "platform": "Both",
+  "environment": "Both"
+}
