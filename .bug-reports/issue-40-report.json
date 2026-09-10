@@ -1,0 +1,14 @@
+{
+  "title": "Unnecessary back button displayed on Sign In screen",
+  "description": "A back button is present on the 'Sign In to Luxor Cloud' screen, which is not required and deviates from the expected UI.",
+  "steps": [
+    "Open the application.",
+    "Tap the hamburger menu icon.",
+    "Tap 'Sign In to Luxor Cloud'."
+  ],
+  "actual": "A 'Back' button is visible at the top left of the 'Sign In to Luxor Cloud' screen.",
+  "expected": "The 'Back' button should be removed, and the text on the screen should be 'Try demo mode'.",
+  "severity": "Low",
+  "platform": "Android",
+  "environment": "Network"
+}
