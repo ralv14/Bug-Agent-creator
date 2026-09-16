@@ -1,0 +1,15 @@
+{
+  "title": "Group names disappear after applying a theme from Demo Mode",
+  "description": "When a theme is applied from the Demo Mode group, the names of existing groups within the application become invisible.",
+  "steps": [
+    "1. Open the application.",
+    "2. Navigate to the 'Themes' section.",
+    "3. Access the 'Demo Mode' themes.",
+    "4. Select and apply any theme from 'Demo Mode'."
+  ],
+  "actual": "After applying a theme from Demo Mode, the group names are no longer visible on the screen.",
+  "expected": "Group names should remain visible after applying a theme from Demo Mode.",
+  "severity": "High",
+  "platform": "Android",
+  "environment": "Network"
+}
