@@ -1,15 +1,17 @@
 {
   "title": "Group names disappear after applying a theme in demo mode",
-  "description": "When a theme is applied in demo mode, the names of the groups are no longer displayed.",
+  "description": "After applying a theme in demo mode, the names of the groups are no longer displayed on the Groups tab.",
   "steps": [
-    "Launch the application.",
-    "Navigate to the 'Controller List' screen.",
-    "Tap on the 'Demo Site' controller.",
-    "Tap on the 'Preview' button for the 'Every Night' theme.",
-    "Observe that the group names ('Group 1', 'Group 2', 'Group 3') are no longer visible."
+    "Open the application.",
+    "Tap the hamburger menu icon.",
+    "Tap 'Start Demo Mode'.",
+    "Tap the 'Themes' tab.",
+    "Tap the 'Preview' button for any theme.",
+    "Tap the 'Groups' tab.",
+    "Observe the group list."
   ],
-  "actual": "The group names are not displayed on the screen after applying a theme in demo mode. The layout shows empty space where the names should be.",
-  "expected": "The group names should be visible and correctly displayed on the screen, even after applying a theme in demo mode.",
+  "actual": "The group cards on the Groups tab do not display any names.",
+  "expected": "The group cards on the Groups tab should display their respective names.",
   "severity": "Medium",
   "platform": "Both",
   "environment": "Both"
