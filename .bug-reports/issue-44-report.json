@@ -1,0 +1,17 @@
+{
+  "title": "Chassis Load Status incorrectly displays 'OK' when status is unknown",
+  "description": "When viewing the Chassis Load Status, the application incorrectly displays 'OK' despite the actual status not being available, indicating a potential issue with status reporting.",
+  "steps": [
+    "Open the application.",
+    "Tap on 'Controller List' under 'Current Site Information'.",
+    "Tap on the controller named 'ABC'.",
+    "Observe the 'Chassis Load Status' section.",
+    "Tap on the indicator next to 'Chassis Load Status' to expand the details.",
+    "Observe the status for 'Chassis 1'."
+  ],
+  "actual": "The Chassis Load Status displays 'OK' with 0% and '0.3 A of 22 A'. However, when the details are expanded, 'Chassis 1' shows a load of '1%' and '0.3 A of 22 A', but the status is not explicitly 'OK'.",
+  "expected": "The Chassis Load Status should accurately reflect the actual status of the chassis. If the status is unknown or not 'OK', it should not be labeled as such.",
+  "severity": "Medium",
+  "platform": "Both",
+  "environment": "Both"
+}
