@@ -1,0 +1,16 @@
+{
+  "title": "Second controller assigned to wrong default site after adding a new site",
+  "description": "When creating a new site and adding multiple controllers, the second controller is incorrectly assigned to the default site instead of the newly created one.",
+  "steps": [
+    "Login to the Luxor Cloud application.",
+    "Tap on 'Add a New Site'.",
+    "Add the first controller.",
+    "Tap on 'Add another controller'.",
+    "Observe the site assignment for the second controller."
+  ],
+  "actual": "The second controller is assigned to the default site instead of the newly created site.",
+  "expected": "The second controller should be assigned to the newly created site.",
+  "severity": "High",
+  "platform": "Both",
+  "environment": "Cloud"
+}
