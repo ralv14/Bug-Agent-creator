@@ -1,0 +1,19 @@
+{
+  "title": "Deleting a disconnected controller deletes all disconnected controllers",
+  "description": "When attempting to delete a single disconnected controller from the controller list, all other disconnected controllers are also deleted.",
+  "steps": [
+    "Launch the application with no controllers connected and an empty controller list.",
+    "Connect controllers and add them manually.",
+    "Disconnect the controllers that were recently added.",
+    "Close and restart the application.",
+    "Navigate to the Controller List and refresh the list to display the disconnected controllers.",
+    "Select one of the disconnected controllers.",
+    "Tap the 'Delete Controller' option.",
+    "Confirm deletion by tapping 'DELETE' on the confirmation dialog."
+  ],
+  "actual": "All disconnected controllers are deleted from the list after deleting one.",
+  "expected": "Only the selected disconnected controller should be deleted from the list.",
+  "severity": "High",
+  "platform": "Android",
+  "environment": "Network"
+}
